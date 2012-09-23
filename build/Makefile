@@ -13,7 +13,8 @@ clean:
 	$(RM) $(STUBS)
 
 install_glue:
-	install -m 0644 $(SHLIB_NAME).$(SHLIB_SUFFIX) $(USR_OPENCV_LIBDIR)
+	install -m 0644 $(SHLIB_NAME).$(SHLIB_SUFFIX) /usr/lib64
+	#install -m 0644 $(SHLIB_NAME).$(SHLIB_SUFFIX) $(USR_OPENCV_LIBDIR)
 
 ifeq ($(wildcard $(OPENCV_LIBDIR)$(SHLIB_NAME).$(SHLIB_SUFFIX)),)
 	@echo "Creating a soft link from $(SHLIB_NAME).$(SHLIB_SUFFIX) in $(USR_OPENCV_LIBDIR) to $(OPENCV_LIBDIR)"
