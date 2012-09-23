@@ -13,7 +13,7 @@ clean:
 	$(RM) $(STUBS)
 
 install_glue:
-	install -m 0644 $(SHLIB_NAME).$(SHLIB_SUFFIX) /usr/lib64
+	install -m 0644 $(SHLIB_NAME).$(SHLIB_SUFFIX) /usr/lib64/
 	#install -m 0644 $(SHLIB_NAME).$(SHLIB_SUFFIX) $(USR_OPENCV_LIBDIR)
 
 ifeq ($(wildcard $(OPENCV_LIBDIR)$(SHLIB_NAME).$(SHLIB_SUFFIX)),)
