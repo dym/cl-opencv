@@ -1,6 +1,7 @@
 ;;; -*- mode: lisp; indent-tabs: nil -*-
 
 (defpackage :cl-opencv
+  (:nicknames "cv")
   (:use #:cl)
   (:export 
     ;; core - basic structures
