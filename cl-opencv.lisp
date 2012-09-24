@@ -8,9 +8,9 @@
 (when (member :darwin cl:*features*)
   (pushnew #p"/opt/local/lib/" cffi:*foreign-library-directories*))
 
-(cffi:define-foreign-library highgui
+(cffi:define-foreign-library opencv_highgui
                              (:darwin (:or "libopencv_highgui.2.2.0.dylib" "libopencv_highgui.dylib"))
-                             (:unix (:or "libopencv_highgui.so.2.1.0" "libopencv_highgui.so" ))
+                             (:unix (:or "libopencv_highgui.so.2.4.2" "libopencv_highgui.so" ))
                              (t (:default "libopencv_highgui")))
 (cffi:use-foreign-library opencv_highgui)
 

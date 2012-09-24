@@ -16,24 +16,24 @@
 
 (defmacro make-structure-serializers (struct slot1 slot2)
   "Create a serialization and deserialization functionf for the
-structure STRUCT with integer slots SLOT1 and SLOT2. These functions
-will pack and unpack the structure into an INT64."
+   structure STRUCT with integer slots SLOT1 and SLOT2. These functions
+   will pack and unpack the structure into an INT64."
   (let ((pack-fn (intern (concatenate 'string (string struct) 
-				      (string '->int64))))
-	(slot1-fn (intern (concatenate 'string (string struct) "-" 
-				       (string slot1))))
-	(slot2-fn (intern (concatenate 'string (string struct) "-" 
-				       (string slot2))))
-	(unpack-fn (intern (concatenate 'string (string 'int64->) 
-					(string struct))))
-	(make-fn (intern (concatenate 'string (string 'make-) 
-				      (string struct)))))
+                                      (string '->int64))))
+        (slot1-fn (intern (concatenate 'string (string struct) "-" 
+                                       (string slot1))))
+        (slot2-fn (intern (concatenate 'string (string struct) "-" 
+                                       (string slot2))))
+        (unpack-fn (intern (concatenate 'string (string 'int64->) 
+                                        (string struct))))
+        (make-fn (intern (concatenate 'string (string 'make-) 
+                                      (string struct)))))
     `(progn
        (defun ,pack-fn (s)
-	 (+ (,slot1-fn s) (ash (,slot2-fn s) 32)))
+         (+ (,slot1-fn s) (ash (,slot2-fn s) 32)))
        (defun ,unpack-fn (n)
-	 (,make-fn ,slot1 (logand n #x00000000ffffffff)
-		   ,slot2 (ash n -32))))))
+         (,make-fn ,slot1 (logand n #x00000000ffffffff)
+                   ,slot2 (ash n -32))))))
 
 ;; CvPoint
 (defstruct cv-point (x 0) (y 0))
@@ -50,7 +50,7 @@ will pack and unpack the structure into an INT64."
 (defun cv-rect->int64s (r)
   "Convert a cv-rect struct R into two 64-bit integers."
   (let ((i1 (+ (cv-rect-x r) (ash (cv-rect-y r) 32)))
-	(i2 (+ (cv-rect-width r) (ash (cv-rect-height r) 32))))
+        (i2 (+ (cv-rect-width r) (ash (cv-rect-height r) 32))))
     (list i1 i2)))
 
 ;; CvScalar 
@@ -61,12 +61,12 @@ will pack and unpack the structure into an INT64."
 ;; scalar.
 (defun make-cv-scalar (&rest args)
   (mapcar #'(lambda (v) (coerce v 'double-float))
-	  (cond ((> (length args) 4) (subseq args 0 4))
-		((< (length args) 4) 
-		 (do ((new-args (reverse args)))
-		     ((= (length new-args) 4) (reverse new-args))
-		   (push 0 new-args)))
-		(t args))))
+          (cond ((> (length args) 4) (subseq args 0 4))
+                ((< (length args) 4) 
+                 (do ((new-args (reverse args)))
+                   ((= (length new-args) 4) (reverse new-args))
+                   (push 0 new-args)))
+                (t args))))
 
 ;; CvMat
 (cffi:defctype cv-matrix :pointer)
@@ -95,20 +95,20 @@ will pack and unpack the structure into an INT64."
 
 ;; void cvAbsDiff(const CvArr* src1, const CvArr* src2, CvArr* dst)
 (cffi:defcfun ("cvAbsDiff" abs-diff) :void
-  "Calculate the absolute difference between elements in SRC1 and SRC2
-and store them in DEST."
-  (src1 cv-array)
-  (src2 cv-array)
-  (dest cv-array))
+              "Calculate the absolute difference between elements in SRC1 and SRC2
+               and store them in DEST."
+              (src1 cv-array)
+              (src2 cv-array)
+              (dest cv-array))
 
 ;; void cvAbsDiffS(const CvArr* src, CvArr* dst, CvScalar value)
 (cffi:defcfun ("cvAbsDiffS_glue" %abs-diff-scalar-glue) :void
-  (src cv-array)
-  (dest cv-array)
-  (s1 :double)
-  (s2 :double)
-  (s3 :double)
-  (s4 :double))
+              (src cv-array)
+              (dest cv-array)
+              (s1 :double)
+              (s2 :double)
+              (s3 :double)
+              (s4 :double))
 
 (defun abs-diff-scalar (src dest scalar)
   "Calculate the absolute difference between elements of SRC and a fixed vector of values SCALAR. Store the result in DEST."
@@ -117,67 +117,67 @@ and store them in DEST."
 ;; void cvAddWeighted(const CvArr* src1, double alpha, const CvArr* src2, 
 ;;                    double beta, double gamma, CvArr* dst)
 (cffi:defcfun ("cvAddWeighted" add-weighted) :void
-  (src1 cv-array)
-  (alpha :double)
-  (src2 cv-array)
-  (beta :double)
-  (dest cv-array)
-  (gamma :double))
+              (src1 cv-array)
+              (alpha :double)
+              (src2 cv-array)
+              (beta :double)
+              (dest cv-array)
+              (gamma :double))
 
 ;; void cvCopy(const CvArr* src, CvArr* dst, const CvArr* mask=NULL)
 (cffi:defcfun ("cvCopy" %copy) :void
-  (src cv-array)
-  (dest cv-array)
-  (mask cv-array))
+              (src cv-array)
+              (dest cv-array)
+              (mask cv-array))
 
 (defun copy (src dest &optional (mask (null-pointer)))
   "Copy an image from SRC to DEST using MASK to determine which pixels
-are copied."
+   are copied."
   (%copy src dest mask))
 
 ;; IplImage* cvCreateImage(CvSize size, int depth, int channels)
 (cffi:defcfun ("cvCreateImage" %create-image) ipl-image
-  (size :int64)
-  (depth :int)
-  (channels :int))
+              (size :int64)
+              (depth :int)
+              (channels :int))
 
 (defun create-image (size depth channels)
   "Create an image with dimensions given by SIZE, DEPTH bits per
-channel, and CHANNELS number of channels."
+   channel, and CHANNELS number of channels."
   (let ((nsize (size->int64 size)))
     (%create-image nsize depth channels)))
 
 ;; CvSize cvGetSize(const CvArr* arr)
 (cffi:defcfun ("cvGetSize" %get-size) :int64
-  (arr cv-array))
+              (arr cv-array))
 
 (defun get-size (arr)
   "Get the dimensions of the OpenCV array ARR. Return a size struct with the
-dimensions."
+   dimensions."
   (let ((nsize (%get-size arr)))
     (int64->size nsize)))
 
 ;; void cvReleaseImage(IplImage** image)
 (cffi:defcfun ("cvReleaseImage" %release-image) :void
-  (image-ptr :pointer))
+              (image-ptr :pointer))
 
 (defun release-image (image)
   "Release the resources use by the image held in IMAGE."
   (with-foreign-object (image-ptr :pointer)
-    (setf (mem-ref image-ptr :pointer) image)
-    (%release-image image-ptr)))
+                       (setf (mem-ref image-ptr :pointer) image)
+                       (%release-image image-ptr)))
 
 ;; void cvResetImageROI(IplImage* image)
 (cffi:defcfun ("cvResetImageROI" reset-image-roi) :void
-  "Reset the ROI for IMAGE."
-  (image ipl-image))
+              "Reset the ROI for IMAGE."
+              (image ipl-image))
 
 ;; void cvSetImageROI(IplImage* image, CvRect rect)
 ;; Note: the two int64 parameters actually represent a CvRect structure.
 (cffi:defcfun ("cvSetImageROI" %set-image-roi) :void
-  (image ipl-image)
-  (rect-i1 :int64)
-  (rect-i2 :int64))
+              (image ipl-image)
+              (rect-i1 :int64)
+              (rect-i2 :int64))
 
 (defun set-image-roi (image rect)
   "Set the ROI of IMAGE to the rectangle RECT."
@@ -187,51 +187,51 @@ dimensions."
 ;; void cvSub(const CvArr* src1, const CvArr* src2, CvArr* dst, 
 ;;            const CvArr* mask=NULL)
 (cffi:defcfun ("cvSub" %subtract) :void
-  (src1 cv-array)
-  (src2 cv-array)
-  (dest cv-array)
-  (mask cv-array))
+              (src1 cv-array)
+              (src2 cv-array)
+              (dest cv-array)
+              (mask cv-array))
 
 (defun subtract (src1 src2 dest &optional (mask (null-pointer)))
   "Subtract elements of SRC2 from SRC1 for the set bits in MASK and
-store the result in DEST. This operation is saturating for types with
-limited range."
+   store the result in DEST. This operation is saturating for types with
+   limited range."
   (%subtract src1 src2 dest mask))
 
 ;; void cvSubS(const CvArr* src, CvScalar value, CvArr* dst, 
 ;;             const CvArr* mask=NULL)
 (cffi:defcfun ("cvSubS_glue" %subtract-scalar-glue) :void
-  (src cv-array)
-  (s1 :double)
-  (s2 :double)
-  (s3 :double)
-  (s4 :double)
-  (dest cv-array)
-  (mask cv-array))
+              (src cv-array)
+              (s1 :double)
+              (s2 :double)
+              (s3 :double)
+              (s4 :double)
+              (dest cv-array)
+              (mask cv-array))
 
 (defun subtract-scalar (src scalar dest &optional (mask (null-pointer)))
   "Subtract corresponding elements of SCALAR from each pixel in SRC
-and store the result in DEST. Only subtract where pixels in MASK are
-non-zero."
+   and store the result in DEST. Only subtract where pixels in MASK are
+   non-zero."
   (%subtract-scalar-glue src (first scalar) (second scalar) (third scalar) 
-			 (fourth scalar) dest mask))
+                         (fourth scalar) dest mask))
 
 ;; void cvSubRS(const CvArr* src, CvScalar value, CvArr* dst, 
 ;;              const CvArr* mask=NULL) 
 (cffi:defcfun ("cvSubRS_glue" %subtract-r-scalar-glue) :void
-  (src cv-array)
-  (s1 :double)
-  (s2 :double)
-  (s3 :double)
-  (s4 :double)
-  (dest cv-array)
-  (mask cv-array))
-    
+              (src cv-array)
+              (s1 :double)
+              (s2 :double)
+              (s3 :double)
+              (s4 :double)
+              (dest cv-array)
+              (mask cv-array))
+
 (defun subtract-r-scalar (src scalar dest &optional (mask (null-pointer)))
   "Subtract corresponding elements of SRC pixels from each element of
-SCALAR and store the result in DEST. Only subtract where pixels in
-MASK are non-zero."
+   SCALAR and store the result in DEST. Only subtract where pixels in
+   MASK are non-zero."
   (%subtract-r-scalar-glue src (first scalar) (second scalar) (third scalar) 
-			   (fourth scalar) dest mask))
+                           (fourth scalar) dest mask))
 
-  
+

@@ -6,6 +6,11 @@
 (defvar *frames-per-second* 30)
 (defvar *millis-per-frame* (round (/ 1000 *frames-per-second*)))
 
+;; clx
+(defstruct cv-size
+  (width
+  height))
+;;
 (defun display (filename)
   "Open the image FILENAME and show it in a window."
   (let ((image (load-image filename 1)))
@@ -28,7 +33,7 @@
         (show-image window-name frame))
       (destroy-window window-name))))
 
-(defun show-camera-threshold (&optional (camera-index 0)
+(defun show-camera-threshold (&optional (camera-index -1)
                               (width *default-width*) (height *default-height*))
   "Show the camera output and a thresholded version in a single window."
   (with-capture (capture (create-camera-capture camera-index))
