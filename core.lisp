@@ -1,4 +1,4 @@
-;;;; -*- mode: lisp; indent-tabs: nil -*-
+;;;; -*- mode: lisp; -*-
 ;;;; core.lisp
 ;;;; OpenCV bindings for SBCL
 ;;;; Core functionality

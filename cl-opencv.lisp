@@ -1,4 +1,4 @@
-;;;; -*- mode: lisp; indent-tabs: nil -*-
+;;;; -*- mode: lisp; -*-
 ;;;; cl-opencv.lisp
 ;;;; OpenCV bindings for SBCL
 ;;;; Library loading and common code

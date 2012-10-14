@@ -1,4 +1,6 @@
-;;; -*- mode: lisp; indent-tabs: nil -*-
+;;; -*- mode: lisp; -*-
+
+(in-package :cl-user)
 
 (defpackage :cl-opencv
   (:nicknames "cv")

@@ -1,4 +1,4 @@
-;;; -*- mode: lisp; indent-tabs: nil -*-
+;;; -*- mode: lisp; -*-
 
 (defpackage #:cl-opencv-test
   (:use #:cl #:cl-opencv)

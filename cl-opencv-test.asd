@@ -1,6 +1,12 @@
-;;; -*- mode: lisp; indent-tabs: nil -*-
+;;; -*- mode: lisp; -*-
 
-(asdf:defsystem #:cl-opencv-test
+(defpackage :cl-opencv-test-asd
+  (:use :cl
+        :asdf))
+
+(in-package :cl-opencv-test-asd)
+
+(defsystem #:cl-opencv-test
   :description "Test programs for cl-opencv."
   :author "J. Bromley <jbromley@gmail.com>"
   :version "0.1"

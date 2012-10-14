@@ -1,6 +1,12 @@
-;;; -*- mode: lisp; indent-tabs: nil -*-
+;;; -*- mode: lisp; -*-
 
-(asdf:defsystem #:cl-opencv
+(defpackage :cl-opencv-asd
+  (:use :cl
+        :asdf))
+
+(in-package :cl-opencv-asd)
+
+(defsystem #:cl-opencv
  :name "cl-opencv"
  :author "J. Bromley <jbromley@gmail.com>"
  :version "0.1"
