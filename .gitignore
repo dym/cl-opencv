@@ -1,3 +1,6 @@
 *~
 *.fasl
 Makefile.opts
+*.so
+*.o
+*.dylib
