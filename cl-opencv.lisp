@@ -10,9 +10,15 @@
 
 (cffi:define-foreign-library opencv_highgui
                              (:darwin (:or "libopencv_highgui.2.2.0.dylib" "libopencv_highgui.dylib"))
-                             (:unix (:or "libopencv_highgui.so.2.4.2" "libopencv_highgui.so" ))
+                             (:unix (:or "libopencv_highgui.so.2.4.4" "libopencv_highgui.so" ))
                              (t (:default "libopencv_highgui")))
 (cffi:use-foreign-library opencv_highgui)
+
+(cffi:define-foreign-library opencv_imgproc
+                             (:darwin (:or "libopencv_imgproc.2.2.0.dylib" "libopencv_imgproc.dylib"))
+                             (:unix (:or "libopencv_imgproc.so.2.4.4" "libopencv_imgproc.so" ))
+                             (t (:default "libopencv_imgproc")))
+(cffi:use-foreign-library opencv_imgproc)
 
 (cffi:define-foreign-library cl-opencv-glue
                              (:darwin "libcl-opencv-glue.dylib")
